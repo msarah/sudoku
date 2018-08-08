@@ -12,9 +12,9 @@ function Cell(x, y, width, height, value = 0, colour = [255,255,255]) {
 		rect(startX + (this.x * this.width), startY + (this.y * this.height), this.width, this.height);
 	}
 
-	this.changeColour = function(newColour, startX, startY) {
+	this.changeColour = function(newColour) {
 		this.colour = newColour;
-		this.render(startX, startY);
+		// this.render(this.startX, this.startY);
 	}
 	this.getX = function() {
 		return this.x;
@@ -66,13 +66,17 @@ function Grid(columns, rows, cellWidth, cellHeight, startX, startY) {
 		for(var i = 0; i < this.columns; i++) {
 			for (var j = 0; j < this.rows; j++) {
 				if(i == this.currentX) {
+					console.log(j);
 					var c = this.getCell(this.currentX, j)
-					c.changeColour(225, this.startY, this.startY);
+					c.changeColour(225);
+					c.render(this.startX, this.startY);
 				}
 				if(j == this.currentY) {
 					var c = this.getCell(i, this.currentY)
-					c.changeColour(225, this.startY, this.startY);
+					c.changeColour(225);
+					c.render(this.startX, this.startY);
 				}
+
 			}
 		}
 	}
@@ -117,23 +121,17 @@ function Grid(columns, rows, cellWidth, cellHeight, startX, startY) {
 		return this.currentY;
 	}
 
-	this.info = function() {
-		console.log("Number of Columns:", columns);
-	  console.log("Number of Rows:", rows);
-	  console.log("Total Number of Cells:", rows * columns);
-	}
-
 }
 
-//check if a number is within a min and max range
+//check if a number is within a min and max range NOT including given max or min
 function between(x, min, max) {
-	return x >= min && x <= max;
+	return x > min && x < max;
 }
 
 
 //SETUP runs once at the beginning of the program initialization
 function setup() {
-	createCanvas(800, 800); //width,height
+	createCanvas(1800, 1800); //width,height
 }
 
 
@@ -144,8 +142,8 @@ function draw() {
 
 	background(250,204,0);
 	//initialize grid
-	var grid = new Grid(9,9,50,50, 200, 200);
-	//PROBLEMS !!!!!!!!!!!!!!!!1---------------------------------
+	var grid = new Grid(9,9,100,100, 300, 100);
+
 	grid.drawGrid();
 
 
@@ -157,8 +155,11 @@ function draw() {
 		console.log("X:", grid.getCurrentX(), " Y:", grid.getCurrentY());
 
 		grid.crossHair();
+
 		var currentCell = grid.getCell(grid.getCurrentX(), grid.getCurrentY());
-		currentCell.changeColour([255,0,0,50], grid.startX, grid.startY);
+		currentCell.changeColour([255,0,0,50]);
+		currentCell.render(grid.startX, grid.startY);
+
 	}
 
 }
