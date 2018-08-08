@@ -1,13 +1,12 @@
-function Cell(x, y, width, height, value = 0, colour = [255,255,255]) {
+function Cell(x, y, width, height, value = 0) {
 	this.x = x;
 	this.y = y;
 	this.width = width;
 	this.height = height;
 	this.value = value;
-	this.colour = colour;
 
-	this.render = function(startX, startY) {
-		fill(this.colour);
+	this.render = function(startX, startY, colour) {
+		fill(colour);
 		stroke(0);
 		rect(startX + (this.x * this.width), startY + (this.y * this.height), this.width, this.height);
 	}
@@ -56,27 +55,24 @@ function Grid(columns, rows, cellWidth, cellHeight, startX, startY) {
 	this.drawGrid = function() {
 		for (var i = 0; i < this.columns; i++) {
 			for (var j = 0; j < this.rows; j++) {
-				this.cells[i][j].render(this.startX, this.startY);
+				this.cells[i][j].render(this.startX, this.startY, [255,255,255]);
 			}
 		}
 	}
 
 	//replace constant value with formula based on startx and start y of grid
-	this.crossHair = function() {
+	this.crossHair = function(colour) {
 		for(var i = 0; i < this.columns; i++) {
 			for (var j = 0; j < this.rows; j++) {
 				if(i == this.currentX) {
 					console.log(j);
 					var c = this.getCell(this.currentX, j)
-					c.changeColour(225);
-					c.render(this.startX, this.startY);
+					c.render(this.startX, this.startY, colour);
 				}
 				if(j == this.currentY) {
 					var c = this.getCell(i, this.currentY)
-					c.changeColour(225);
-					c.render(this.startX, this.startY);
+					c.render(this.startX, this.startY, colour);
 				}
-
 			}
 		}
 	}
@@ -142,7 +138,7 @@ function draw() {
 
 	background(250,204,0);
 	//initialize grid
-	var grid = new Grid(9,9,100,100, 300, 100);
+	var grid = new Grid(9,9,75,75, 300, 100);
 
 	grid.drawGrid();
 
@@ -151,15 +147,10 @@ function draw() {
 
 
 	if(inGrid) {
-		console.log("mouseX:", mouseX, "mouseY:", mouseY);
-		console.log("X:", grid.getCurrentX(), " Y:", grid.getCurrentY());
-
-		grid.crossHair();
+		grid.crossHair(225, );
 
 		var currentCell = grid.getCell(grid.getCurrentX(), grid.getCurrentY());
-		currentCell.changeColour([255,0,0,50]);
-		currentCell.render(grid.startX, grid.startY);
-
+		currentCell.render(grid.startX, grid.startY, [200,0,0,50]);
 	}
 
 }
