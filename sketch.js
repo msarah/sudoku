@@ -61,7 +61,7 @@ function Grid(columns, rows, cellWidth, cellHeight, startX, startY) {
 	}
 
 	//replace constant value with formula based on startx and start y of grid
-	this.crossHair = function(colour) {
+	this.crossHair = function(colour, centerColour) {
 		for(var i = 0; i < this.columns; i++) {
 			for (var j = 0; j < this.rows; j++) {
 				if(i == this.currentX) {
@@ -73,8 +73,11 @@ function Grid(columns, rows, cellWidth, cellHeight, startX, startY) {
 					var c = this.getCell(i, this.currentY)
 					c.render(this.startX, this.startY, colour);
 				}
+
 			}
 		}
+		var currentCell = this.getCell(this.currentX, this.currentY);
+		currentCell.render(this.startX, this.startY, centerColour);
 	}
 
 
@@ -142,15 +145,10 @@ function draw() {
 
 	grid.drawGrid();
 
-
 	var inGrid = ((between(mouseX, grid.getStartX(), grid.getEndX())) && (between(mouseY, grid.getStartY(),grid.getEndY())));
-
-
 	if(inGrid) {
-		grid.crossHair(225, );
-
-		var currentCell = grid.getCell(grid.getCurrentX(), grid.getCurrentY());
-		currentCell.render(grid.startX, grid.startY, [200,0,0,50]);
+	//              (grid colour, center colour)
+		grid.crossHair(225, [200,0,0,60]);
 	}
 
 }
